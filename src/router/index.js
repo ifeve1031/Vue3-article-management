@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useUserStore } from '@/stores'
 
 // createRouter 创建路由实例，===> new VueRouter()
 // 1. history模式: createWebHistory()   http://xxx/user
@@ -14,8 +15,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 //懒加载
 const LoginPage = () => import('@/views/login/LoginPage.vue')
 const LayoutContainer = () => import('@/views/layout/LayoutContainer.vue')
-const ArticleChannel = () => import('@/views/artical/ArticleChannel.vue')
-const ArticleManage = () => import('@/views/artical/ArticleManage.vue')
+const ArticleChannel = () => import('@/views/article/ArticleChannel.vue')
+const ArticleManage = () => import('@/views/article/ArticleManage.vue')
 const UserAvatar = () => import('@/views/user/UserAvatar.vue')
 const UserPassword = () => import('@/views/user/UserPassword.vue')
 const UserProfile = () => import('@/views/user/UserProfile.vue')
@@ -31,14 +32,14 @@ const router = createRouter({
     {
       path:'/',
       component:LayoutContainer,
-      redirect:'/artical/manage',
+      redirect:'/article/channel',
       children:[
         {
-          path:'/artical/manage',
+          path:'/article/manage',
           component:ArticleManage,
         },
         {
-          path:'/artical/channel',
+          path:'/article/channel',
           component:ArticleChannel,
         },
         {
@@ -56,6 +57,16 @@ const router = createRouter({
       ]
     }
   ],
+})
+
+
+router.beforeEach((to,from) => {
+  //校验是否登录，不登陆则跳转到登录页
+  const userStore = useUserStore() 
+  if(!userStore.token && to.path!=='/login'){
+    return '/login'
+  }
+  //默认直接跳转
 })
 
 export default router
