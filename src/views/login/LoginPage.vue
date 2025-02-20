@@ -65,6 +65,7 @@ const register = async () => {
   //切换到登录
   isRegister.value = false
 }
+
 //获取用户信息
 const userStore = useUserStore()
 const login = async () => {
