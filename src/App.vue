@@ -17,7 +17,7 @@ const useStore = useUserStore()
 
 <template>
   <div>
-    <!-- 国际化处理 -->
+    <!--国际化处理-->
     <el-config-provider :locale="zh">
       <router-view></router-view>
     </el-config-provider>
