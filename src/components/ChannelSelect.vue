@@ -14,7 +14,7 @@ const emit = defineEmits(['update:modelValue'])
 //子传父
 defineProps({
     modelValue:{
-        type:[Number, String]
+        type:[String,Number]
     }
 })
 

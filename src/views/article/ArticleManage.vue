@@ -8,7 +8,7 @@ import {
     Search,
     Star,
 } from '@element-plus/icons-vue'
-import { artGetListService } from '@/api/article'
+import { artDelArticleService, artGetListService } from '@/api/article'
 import { formatTime } from '@/utils/formate'
 
 //loading效果
@@ -76,8 +76,33 @@ const onEditArticle = (row) =>{
     articleEditRef.value.open(row)
 }
 //删除
-const onDeleteArticle = (row) => {
+const onDeleteArticle = async (row) => {
     //console.log(row)
+    await ElMessageBox.confirm(
+        '你确认删除该文章吗?',
+        '温馨提示',
+        {
+            confirmButtonText: '确认',
+            cancelButtonText: '取消',
+            type: 'warning',
+        }
+    )
+        .then(async () => {
+            await artDelArticleService(row.id)
+            ElMessage.success('删除成功！')
+            getList()
+        })
+        .catch(() => {
+        })
+}
+// 添加修改成功
+const onSuccess = (type) =>{
+    //如果是add状态，则渲染到最后一页
+    if(type === 'add'){
+        const lastPage = Math.ceil((total.value+1)/params.value.pagesize)//向上取整
+        params.value.pagenum = lastPage
+    }
+    getList()
 }
 
 
@@ -145,7 +170,7 @@ const onDeleteArticle = (row) => {
             @current-change="handleCurrentChange" style="margin-top: 20px; justify-content: flex-end" />
 
         <!-- 抽屉,通过 ref 绑定 -->
-        <article-edit ref="articleEditRef"></article-edit>
+        <article-edit ref="articleEditRef" @success="onSuccess"></article-edit>
     </page-container>
 </template>
 
