@@ -6,7 +6,7 @@ import zh from 'element-plus/es/locale/lang/zh-cn.mjs'
 
 const router = useRouter()
 const route = useRoute()
-
+//tyltyltyltyltyl//
 const goSearch = () => {
   console.log(router, route)
   router.push('/search')
